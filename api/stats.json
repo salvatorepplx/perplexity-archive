@@ -1,0 +1,21 @@
+{
+  "article_count": 180,
+  "source_count": 1113,
+  "category_count": 13,
+  "categories": [
+    {"category": "Science", "count": 35},
+    {"category": "Technology", "count": 34},
+    {"category": "Biography", "count": 16},
+    {"category": "History", "count": 14},
+    {"category": "Geography", "count": 13},
+    {"category": "Economics", "count": 11},
+    {"category": "Arts & Culture", "count": 11},
+    {"category": "Health", "count": 10},
+    {"category": "Mathematics", "count": 8},
+    {"category": "Companies", "count": 8},
+    {"category": "Politics", "count": 7},
+    {"category": "Philosophy", "count": 7},
+    {"category": "Environment", "count": 6}
+  ],
+  "last_update": "2026-01-30 10:10:05"
+}
