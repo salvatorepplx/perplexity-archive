@@ -3,41 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Article - Perplexity Archive</title>
+    <title>Article - The Perplexity Archive</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        .article-page{min-height:100vh;padding-top:80px}
-        .article-container{max-width:800px;margin:0 auto;padding:40px 20px}
-        .back-link{display:inline-block;margin-bottom:20px;color:var(--cyan)}
-        .article-title{font-size:2.5rem;margin-bottom:16px}
-        .article-meta{display:flex;gap:16px;margin-bottom:24px;color:#666}
-        .article-content{line-height:1.8;font-size:1.1rem}
-        .article-content p{margin-bottom:16px}
-        .sources-section{background:var(--offblack);color:white;padding:24px;border-radius:12px;margin-top:32px}
-        .source-item{padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.1)}
-        .loading{text-align:center;padding:60px}
+        .article-page{min-height:100vh;padding-top:72px}
+        .article-container{max-width:900px;margin:0 auto;padding:64px 40px}
+        .back-link{display:inline-flex;align-items:center;gap:8px;color:var(--text-secondary);font-weight:500;margin-bottom:40px}
+        .back-link:hover{color:var(--cyan)}
+        .article-page-header{margin-bottom:40px;padding-bottom:40px;border-bottom:1px solid var(--border)}
+        .article-page-meta{display:flex;align-items:center;gap:16px;margin-bottom:16px;flex-wrap:wrap}
+        .article-page-category{background:var(--light-teal);color:var(--teal);padding:4px 16px;border-radius:100px;font-size:0.875rem;font-weight:600}
+        .article-page-confidence{display:flex;align-items:center;gap:4px;font-size:0.875rem;font-weight:500}
+        .article-page-confidence.high{color:#059669}
+        .article-page-title{font-size:clamp(2rem,5vw,3.5rem);line-height:1.1;margin-bottom:16px}
+        .article-page-excerpt{font-size:1.25rem;color:var(--text-secondary);line-height:1.6}
+        .article-full-content{font-size:1.125rem;line-height:1.8;color:var(--text-primary)}
+        .article-full-content h2{font-size:1.75rem;margin:40px 0 16px;padding-top:24px;border-top:1px solid var(--border)}
+        .article-full-content p{margin-bottom:16px}
+        .article-sources{background:var(--offblack);color:white;border-radius:16px;padding:40px;margin:40px 0}
+        .sources-title{display:flex;align-items:center;gap:8px;font-size:1.25rem;margin-bottom:24px}
+        .source-item{display:flex;gap:16px;padding:16px 0;border-bottom:1px solid rgba(255,255,255,0.1)}
+        .source-number{flex-shrink:0;width:28px;height:28px;background:var(--cyan);color:var(--offblack);border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:0.875rem}
+        .source-details{flex:1}
+        .source-title a{color:white}
+        .source-title a:hover{color:var(--cyan)}
+        .source-meta{display:flex;gap:16px;font-size:0.8125rem;color:rgba(255,255,255,0.6);margin-top:4px}
+        .loading-state{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:50vh;gap:16px}
+        .loading-spinner{width:48px;height:48px;border:3px solid var(--border);border-top-color:var(--cyan);border-radius:50%;animation:spin 1s linear infinite}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        .error-state{text-align:center;padding:96px}
+        .error-state a{display:inline-flex;align-items:center;gap:8px;background:var(--offblack);color:white;padding:16px 24px;border-radius:10px;font-weight:600}
     </style>
 </head>
 <body>
-    <nav class="nav"><div class="nav-container"><a href="index.html" class="nav-logo">The Perplexity Archive</a></div></nav>
+    <nav class="nav"><div class="nav-container"><a href="index.html" class="nav-logo"><span>The Perplexity Archive</span></a><div class="nav-links"><a href="dashboard.html" class="nav-link">Dashboard</a></div></div></nav>
     <main class="article-page">
         <div class="article-container" id="articleContainer">
-            <div class="loading">Loading article...</div>
+            <div class="loading-state" id="loadingState"><div class="loading-spinner"></div><span>Loading article...</span></div>
         </div>
     </main>
     <script>
-        async function loadArticle(){const params=new URLSearchParams(window.location.search);const slug=params.get('slug');if(!slug){showError('No article specified');return}
-        try{const res=await fetch('./data.json');const data=await res.json();const article=data.articles.find(a=>a.slug===slug);if(!article){showError('Article not found');return}
-        document.title=article.title+' - Perplexity Archive';
-        document.getElementById('articleContainer').innerHTML=`
-            <a href="index.html" class="back-link">← Back</a>
-            <h1 class="article-title">${article.title}</h1>
-            <div class="article-meta"><span>${article.category}</span><span>${article.confidence_score}% confidence</span><span>${(article.sources||[]).length} sources</span></div>
-            <div class="article-content">${article.content||article.excerpt||''}</div>
-            ${(article.sources||[]).length?`<div class="sources-section"><h3>Sources</h3>${article.sources.map((s,i)=>`<div class="source-item">${i+1}. ${s.title||s.url}</div>`).join('')}</div>`:''}
-        `}catch(e){showError('Failed to load')}}
-        function showError(msg){document.getElementById('articleContainer').innerHTML=`<div class="loading">${msg}</div>`}
-        loadArticle();
+        let articleData = null;
+        let allArticles = [];
+        document.addEventListener('DOMContentLoaded', () => { loadArticle(); });
+        
+        async function loadArticle() {
+            const container = document.getElementById('articleContainer');
+            const params = new URLSearchParams(window.location.search);
+            const slug = params.get('slug');
+            if (!slug) { showError('No article specified'); return; }
+            try {
+                const response = await fetch('./data.json');
+                const data = await response.json();
+                allArticles = data.articles || [];
+                const article = allArticles.find(a => a.slug === slug);
+                if (!article) { showError('Article not found'); return; }
+                articleData = article;
+                document.title = article.title + ' - The Perplexity Archive';
+                renderArticle(article);
+            } catch (error) {
+                console.error('Failed to load article:', error);
+                showError('Failed to load article');
+            }
+        }
+        
+        function renderArticle(article) {
+            const container = document.getElementById('articleContainer');
+            const confClass = article.confidence_score >= 80 ? 'high' : article.confidence_score >= 60 ? 'medium' : 'low';
+            const sources = article.sources || [];
+            
+            container.innerHTML = `
+                <a href="index.html" class="back-link">← Back to Archive</a>
+                <header class="article-page-header">
+                    <div class="article-page-meta">
+                        <span class="article-page-category">${escapeHtml(article.category)}</span>
+                        <span class="article-page-confidence ${confClass}">${article.confidence_score}% Confidence</span>
+                    </div>
+                    <h1 class="article-page-title">${escapeHtml(article.title)}</h1>
+                    <p class="article-page-excerpt">${escapeHtml(article.excerpt || '')}</p>
+                </header>
+                <article class="article-full-content">
+                    ${renderContent(article.content)}
+                </article>
+                ${sources.length > 0 ? `
+                <section class="article-sources">
+                    <h2 class="sources-title">Sources (${sources.length})</h2>
+                    ${sources.map((s, i) => `
+                        <div class="source-item">
+                            <span class="source-number">${i+1}</span>
+                            <div class="source-details">
+                                <div class="source-title"><a href="${escapeHtml(s.url)}" target="_blank">${escapeHtml(s.title)}</a></div>
+                                <div class="source-meta"><span>${escapeHtml(s.source_type || 'Web')}</span></div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </section>` : ''}
+            `;
+        }
+        
+        function renderContent(content) {
+            if (!content) return '<p>No content available.</p>';
+            return content.split('\n\n').map(p => p.trim() ? '<p>' + escapeHtml(p) + '</p>' : '').join('');
+        }
+        
+        function showError(message) {
+            document.getElementById('articleContainer').innerHTML = `<div class="error-state"><h2>${escapeHtml(message)}</h2><p>The article might have been moved or doesn't exist.</p><a href="index.html">Return to Archive</a></div>`;
+        }
+        
+        function escapeHtml(str) { if (!str) return ''; const div = document.createElement('div'); div.textContent = str; return div.innerHTML; }
     </script>
 </body>
 </html>
