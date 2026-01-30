@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Navigation -->
     <nav class="nav">
         <div class="nav-container">
             <a href="#" class="nav-logo">
@@ -31,38 +30,19 @@
             </div>
         </div>
     </nav>
-
-    <!-- Hero Section -->
     <header class="hero">
         <div class="hero-content">
             <div class="hero-badge">
                 <span class="badge-dot"></span>
                 <span>Transparent • Sourced • Verified</span>
             </div>
-            <h1 class="hero-title">
-                Knowledge that<br>
-                <span class="title-accent">shows its work</span>
-            </h1>
-            <p class="hero-subtitle">
-                An AI-powered encyclopedia that doesn't hide behind black boxes. 
-                Every fact is traced to its source. Every claim shows its confidence. 
-                Every perspective gets heard.
-            </p>
-            
-            <!-- Search -->
+            <h1 class="hero-title">Knowledge that<br><span class="title-accent">shows its work</span></h1>
+            <p class="hero-subtitle">An AI-powered encyclopedia that doesn't hide behind black boxes. Every fact is traced to its source. Every claim shows its confidence. Every perspective gets heard.</p>
             <div class="search-container">
                 <div class="search-box">
-                    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="11" cy="11" r="8"/>
-                        <path d="M21 21l-4.35-4.35"/>
-                    </svg>
+                    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
                     <input type="text" id="searchInput" placeholder="Search the archive..." autocomplete="off">
-                    <button class="search-btn" id="searchBtn">
-                        <span>Explore</span>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7"/>
-                        </svg>
-                    </button>
+                    <button class="search-btn" id="searchBtn"><span>Explore</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
                 </div>
                 <div class="search-suggestions">
                     <span>Try:</span>
@@ -72,126 +52,52 @@
                 </div>
             </div>
         </div>
-        
         <div class="hero-stats">
-            <div class="stat">
-                <span class="stat-number" data-stat="articles" data-count="0">—</span>
-                <span class="stat-label">Articles</span>
-            </div>
+            <div class="stat"><span class="stat-number" data-stat="articles" data-count="0">—</span><span class="stat-label">Articles</span></div>
             <div class="stat-divider"></div>
-            <div class="stat">
-                <span class="stat-number" data-stat="sources" data-count="0">—</span>
-                <span class="stat-label">Verified Sources</span>
-            </div>
+            <div class="stat"><span class="stat-number" data-stat="sources" data-count="0">—</span><span class="stat-label">Verified Sources</span></div>
             <div class="stat-divider"></div>
-            <div class="stat">
-                <span class="stat-number" data-stat="categories" data-count="0">—</span>
-                <span class="stat-label">Categories</span>
-            </div>
+            <div class="stat"><span class="stat-number" data-stat="categories" data-count="0">—</span><span class="stat-label">Categories</span></div>
         </div>
     </header>
-
-    <!-- Article Preview Section -->
     <main class="main" id="results">
-        <!-- Featured Article placeholder - loads from API -->
         <section class="featured-section">
-            <div class="section-header">
-                <h2>Featured Entry</h2>
-                <span class="section-badge">Loading...</span>
-            </div>
+            <div class="section-header"><h2>Featured Entry</h2><span class="section-badge">Updated recently</span></div>
             <article class="article-card featured" id="featuredArticle">
                 <div class="article-header">
-                    <div class="article-meta">
-                        <span class="article-category">Loading...</span>
-                    </div>
-                    <h3 class="article-title">Loading articles from API...</h3>
-                    <p class="article-excerpt">The archive is loading. Please wait a moment.</p>
+                    <div class="article-meta"><span class="article-category">Loading...</span></div>
+                    <h3 class="article-title">Loading featured article...</h3>
+                    <p class="article-excerpt">Please wait while we load the archive data.</p>
                 </div>
             </article>
         </section>
-        
-        <!-- How It Works -->
         <section class="how-section" id="methodology">
-            <div class="section-header">
-                <h2>How The Archive Works</h2>
-                <p class="section-subtitle">Transparency isn't a feature—it's the foundation</p>
-            </div>
-            
+            <div class="section-header"><h2>How The Archive Works</h2><p class="section-subtitle">Transparency isn't a feature—it's the foundation</p></div>
             <div class="principles-grid">
-                <div class="principle-card">
-                    <div class="principle-icon">📑</div>
-                    <h3>Source Transparency</h3>
-                    <p>Every claim links to its source. No "fact-checked by AI" black boxes.</p>
-                </div>
-                <div class="principle-card">
-                    <div class="principle-icon">👥</div>
-                    <h3>Multiple Perspectives</h3>
-                    <p>Contested topics show all significant viewpoints, weighted by source quality.</p>
-                </div>
-                <div class="principle-card">
-                    <div class="principle-icon">🔄</div>
-                    <h3>Living Knowledge</h3>
-                    <p>Articles update as new information emerges. See when facts were last verified.</p>
-                </div>
-                <div class="principle-card">
-                    <div class="principle-icon">📊</div>
-                    <h3>Confidence Scores</h3>
-                    <p>Every article shows accuracy confidence based on source quality and consensus.</p>
-                </div>
+                <div class="principle-card"><h3>Source Transparency</h3><p>Every claim links to its source. No "fact-checked by AI" black boxes.</p></div>
+                <div class="principle-card"><h3>Multiple Perspectives</h3><p>Contested topics show all significant viewpoints, weighted by source quality.</p></div>
+                <div class="principle-card"><h3>Living Knowledge</h3><p>Articles update as new information emerges. See exactly when facts were last verified.</p></div>
+                <div class="principle-card"><h3>Confidence Scores</h3><p>Every article shows how confident we are in its accuracy.</p></div>
             </div>
         </section>
-        
-        <!-- Topics -->
         <section class="topics-section">
-            <div class="section-header">
-                <h2>Explore by Topic</h2>
-            </div>
+            <div class="section-header"><h2>Explore by Topic</h2></div>
             <div class="topics-grid">
-                <a href="#" class="topic-card" style="--topic-color: #20B8CD">
-                    <span class="topic-name">Technology</span>
-                    <span class="topic-count">— articles</span>
-                </a>
-                <a href="#" class="topic-card" style="--topic-color: #2E8B57">
-                    <span class="topic-name">Geography</span>
-                    <span class="topic-count">— articles</span>
-                </a>
-                <a href="#" class="topic-card" style="--topic-color: #D2BA4C">
-                    <span class="topic-name">History</span>
-                    <span class="topic-count">— articles</span>
-                </a>
-                <a href="#" class="topic-card" style="--topic-color: #DB4545">
-                    <span class="topic-name">Science</span>
-                    <span class="topic-count">— articles</span>
-                </a>
-                <a href="#" class="topic-card" style="--topic-color: #944454">
-                    <span class="topic-name">Philosophy</span>
-                    <span class="topic-count">— articles</span>
-                </a>
-                <a href="#" class="topic-card" style="--topic-color: #5D878F">
-                    <span class="topic-name">Arts & Culture</span>
-                    <span class="topic-count">— articles</span>
-                </a>
+                <a href="#" class="topic-card" style="--topic-color: #20B8CD"><span class="topic-name">Technology</span><span class="topic-count">— articles</span></a>
+                <a href="#" class="topic-card" style="--topic-color: #2E8B57"><span class="topic-name">Geography</span><span class="topic-count">— articles</span></a>
+                <a href="#" class="topic-card" style="--topic-color: #D2BA4C"><span class="topic-name">History</span><span class="topic-count">— articles</span></a>
+                <a href="#" class="topic-card" style="--topic-color: #DB4545"><span class="topic-name">Science</span><span class="topic-count">— articles</span></a>
+                <a href="#" class="topic-card" style="--topic-color: #944454"><span class="topic-name">Philosophy</span><span class="topic-count">— articles</span></a>
+                <a href="#" class="topic-card" style="--topic-color: #5D878F"><span class="topic-name">Arts & Culture</span><span class="topic-count">— articles</span></a>
             </div>
         </section>
     </main>
-    
     <footer class="footer">
         <div class="footer-content">
-            <div class="footer-brand">
-                <div class="footer-logo">The Perplexity Archive</div>
-                <p class="footer-tagline">Knowledge that shows its work.</p>
-            </div>
+            <div class="footer-brand"><div class="footer-logo"><span>The Perplexity Archive</span></div><p class="footer-tagline">Knowledge that shows its work.</p></div>
         </div>
-        <div class="footer-bottom">
-            <p>© 2026 Perplexity AI. Content available under CC BY-SA 4.0.</p>
-            <div class="footer-meta">
-                <span id="lastUpdate">Continuously updated</span>
-                <span>•</span>
-                <span id="footerArticleCount">Loading articles...</span>
-            </div>
-        </div>
+        <div class="footer-bottom"><p>© 2026 Perplexity AI. Content available under CC BY-SA 4.0.</p><div class="footer-meta"><span id="lastUpdate">Continuously updated</span><span>•</span><span id="footerArticleCount">Loading articles...</span></div></div>
     </footer>
-    
     <script src="app.js"></script>
 </body>
 </html>
