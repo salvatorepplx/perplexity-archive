@@ -3,14 +3,547 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Perplexity Archive</title>
+    <title>The Perplexity Archive — Knowledge, Verified</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Source+Sans+3:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <nav class="nav"><div class="nav-container"><a href="#" class="nav-logo"><span>The Perplexity Archive</span></a><div class="nav-links"><a href="dashboard.html">Dashboard</a></div></div></nav>
-    <header class="hero"><div class="hero-content"><h1 class="hero-title">Knowledge that shows its work</h1><p>An AI-powered encyclopedia. Every fact traced to its source.</p><div class="search-container"><input type="text" id="searchInput" placeholder="Search..."><button id="searchBtn">Search</button></div></div><div class="hero-stats"><span class="stat-number" data-stat="articles">-</span> Articles | <span class="stat-number" data-stat="sources">-</span> Sources</div></header>
-    <main class="main" id="results"><section class="featured-section"><h2>Featured</h2><article id="featuredArticle">Loading...</article></section></main>
-    <footer class="footer">2026 Perplexity AI</footer>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16 2L4 10v12l12 8 12-8V10L16 2z" stroke="currentColor" stroke-width="2" fill="none"/>
+                        <path d="M16 8l6 4v8l-6 4-6-4v-8l6-4z" fill="currentColor" opacity="0.3"/>
+                        <circle cx="16" cy="16" r="3" fill="currentColor"/>
+                    </svg>
+                </div>
+                <span>The Perplexity Archive</span>
+            </a>
+            <div class="nav-links">
+                <a href="#about" class="nav-link">About</a>
+                <a href="#methodology" class="nav-link">Methodology</a>
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="#" class="nav-link nav-link-cta">Contribute</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="badge-dot"></span>
+                <span>Transparent • Sourced • Verified</span>
+            </div>
+            <h1 class="hero-title">
+                Knowledge that<br>
+                <span class="title-accent">shows its work</span>
+            </h1>
+            <p class="hero-subtitle">
+                An AI-powered encyclopedia that doesn't hide behind black boxes. 
+                Every fact is traced to its source. Every claim shows its confidence. 
+                Every perspective gets heard.
+            </p>
+            
+            <!-- Search -->
+            <div class="search-container">
+                <div class="search-box">
+                    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/>
+                        <path d="M21 21l-4.35-4.35"/>
+                    </svg>
+                    <input type="text" id="searchInput" placeholder="Search the archive..." autocomplete="off">
+                    <button class="search-btn" id="searchBtn">
+                        <span>Explore</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="search-suggestions">
+                    <span>Try:</span>
+                    <button class="suggestion" data-query="Artificial Intelligence">Artificial Intelligence</button>
+                    <button class="suggestion" data-query="Climate Change">Climate Change</button>
+                    <button class="suggestion" data-query="Quantum Computing">Quantum Computing</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="hero-stats">
+            <div class="stat">
+                <span class="stat-number" data-stat="articles" data-count="0">—</span>
+                <span class="stat-label">Articles</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat">
+                <span class="stat-number" data-stat="sources" data-count="0">—</span>
+                <span class="stat-label">Verified Sources</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat">
+                <span class="stat-number" data-stat="categories" data-count="0">—</span>
+                <span class="stat-label">Categories</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Article Preview Section -->
+    <main class="main" id="results">
+        <!-- Featured Article -->
+        <section class="featured-section">
+            <div class="section-header">
+                <h2>Featured Entry</h2>
+                <span class="section-badge">Updated 2 hours ago</span>
+            </div>
+            
+            <article class="article-card featured" id="featuredArticle">
+                <div class="article-header">
+                    <div class="article-meta">
+                        <span class="article-category">Technology</span>
+                        <span class="confidence-badge high">
+                            <svg viewBox="0 0 16 16" fill="currentColor">
+                                <path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8z"/>
+                                <path d="M8 4a.75.75 0 01.75.75v2.5h2.5a.75.75 0 010 1.5h-2.5v2.5a.75.75 0 01-1.5 0v-2.5h-2.5a.75.75 0 010-1.5h2.5v-2.5A.75.75 0 018 4z"/>
+                            </svg>
+                            97% Confidence
+                        </span>
+                    </div>
+                    <h3 class="article-title">Artificial Intelligence</h3>
+                    <p class="article-excerpt">
+                        Artificial intelligence (AI) is the simulation of human intelligence processes by machines, 
+                        especially computer systems. These processes include learning, reasoning, and self-correction.
+                    </p>
+                </div>
+                
+                <div class="article-content">
+                    <div class="content-section">
+                        <h4>Overview</h4>
+                        <p>
+                            AI technology has evolved from theoretical concepts in the 1950s to practical applications 
+                            that now power search engines, recommendation systems, autonomous vehicles, and natural 
+                            language processing tools. Modern AI systems leverage machine learning, neural networks, 
+                            and vast datasets to achieve capabilities that were once considered science fiction.
+                            <sup class="source-ref" data-source="1">[1]</sup>
+                        </p>
+                    </div>
+                    
+                    <div class="content-section">
+                        <h4>Key Developments</h4>
+                        <ul class="content-list">
+                            <li>
+                                <strong>2017:</strong> Transformer architecture introduced, revolutionizing NLP
+                                <sup class="source-ref" data-source="2">[2]</sup>
+                            </li>
+                            <li>
+                                <strong>2022:</strong> Large language models demonstrate emergent capabilities
+                                <sup class="source-ref" data-source="3">[3]</sup>
+                            </li>
+                            <li>
+                                <strong>2024:</strong> Multimodal AI systems achieve human-level performance on benchmarks
+                                <sup class="source-ref" data-source="4">[4]</sup>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Perspectives Panel -->
+                    <div class="perspectives-panel">
+                        <div class="perspectives-header">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+                                <circle cx="9" cy="7" r="4"/>
+                                <path d="M23 21v-2a4 4 0 00-3-3.87"/>
+                                <path d="M16 3.13a4 4 0 010 7.75"/>
+                            </svg>
+                            <span>Multiple Perspectives</span>
+                        </div>
+                        <div class="perspectives-grid">
+                            <div class="perspective">
+                                <span class="perspective-label">Academic Consensus</span>
+                                <p>AI represents a transformative technology with both significant benefits and risks requiring careful governance.</p>
+                            </div>
+                            <div class="perspective">
+                                <span class="perspective-label">Industry View</span>
+                                <p>AI is primarily a productivity tool that will augment human capabilities rather than replace them.</p>
+                            </div>
+                            <div class="perspective">
+                                <span class="perspective-label">Critical View</span>
+                                <p>Current AI systems lack true understanding and carry risks of perpetuating biases present in training data.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sources Panel -->
+                <div class="sources-panel">
+                    <div class="sources-header">
+                        <h4>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/>
+                                <path d="M16 17l5-5-5-5"/>
+                                <path d="M21 12H9"/>
+                            </svg>
+                            Sources & Citations
+                        </h4>
+                        <span class="sources-count">12 sources verified</span>
+                    </div>
+                    <div class="sources-list">
+                        <div class="source-item" data-id="1">
+                            <span class="source-number">1</span>
+                            <div class="source-content">
+                                <a href="#" class="source-title">Nature: The state of AI in 2025</a>
+                                <span class="source-meta">Peer-reviewed • Published Jan 2025</span>
+                            </div>
+                            <span class="source-trust high">High Trust</span>
+                        </div>
+                        <div class="source-item" data-id="2">
+                            <span class="source-number">2</span>
+                            <div class="source-content">
+                                <a href="#" class="source-title">Attention Is All You Need - Vaswani et al.</a>
+                                <span class="source-meta">arXiv • Published 2017 • 98,000+ citations</span>
+                            </div>
+                            <span class="source-trust high">High Trust</span>
+                        </div>
+                        <div class="source-item" data-id="3">
+                            <span class="source-number">3</span>
+                            <div class="source-content">
+                                <a href="#" class="source-title">Emergent Abilities of Large Language Models</a>
+                                <span class="source-meta">Google Research • 2022</span>
+                            </div>
+                            <span class="source-trust high">High Trust</span>
+                        </div>
+                        <div class="source-item" data-id="4">
+                            <span class="source-number">4</span>
+                            <div class="source-content">
+                                <a href="#" class="source-title">Stanford AI Index Report 2024</a>
+                                <span class="source-meta">Stanford HAI • Annual Report</span>
+                            </div>
+                            <span class="source-trust high">High Trust</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="article-footer">
+                    <div class="footer-info">
+                        <span class="last-verified">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                <path d="M9 12l2 2 4-4"/>
+                            </svg>
+                            Last verified: January 29, 2026
+                        </span>
+                        <span class="revision-link">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <polyline points="12 6 12 12 16 14"/>
+                            </svg>
+                            View revision history
+                        </span>
+                    </div>
+                    <button class="read-more-btn">
+                        Read Full Article
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+                </div>
+            </article>
+        </section>
+        
+        <!-- How It Works -->
+        <section class="how-section" id="methodology">
+            <div class="section-header">
+                <h2>How The Archive Works</h2>
+                <p class="section-subtitle">Transparency isn't a feature—it's the foundation</p>
+            </div>
+            
+            <div class="principles-grid">
+                <div class="principle-card">
+                    <div class="principle-icon">
+                        <svg viewBox="0 0 48 48" fill="none">
+                            <rect x="4" y="8" width="40" height="32" rx="4" stroke="currentColor" stroke-width="3"/>
+                            <path d="M4 16h40" stroke="currentColor" stroke-width="3"/>
+                            <circle cx="10" cy="12" r="2" fill="currentColor"/>
+                            <circle cx="16" cy="12" r="2" fill="currentColor"/>
+                            <circle cx="22" cy="12" r="2" fill="currentColor"/>
+                            <path d="M12 24h8M12 30h16M12 36h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M32 28l4 4 8-8" stroke="#20B8CD" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3>Source Transparency</h3>
+                    <p>Every claim links to its source. No "fact-checked by AI" black boxes. You see exactly where information comes from.</p>
+                </div>
+                
+                <div class="principle-card">
+                    <div class="principle-icon">
+                        <svg viewBox="0 0 48 48" fill="none">
+                            <circle cx="16" cy="20" r="8" stroke="currentColor" stroke-width="3"/>
+                            <circle cx="32" cy="20" r="8" stroke="currentColor" stroke-width="3"/>
+                            <circle cx="24" cy="36" r="8" stroke="currentColor" stroke-width="3"/>
+                            <path d="M20 26l4 4" stroke="currentColor" stroke-width="2"/>
+                            <path d="M28 26l-4 4" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <h3>Multiple Perspectives</h3>
+                    <p>Contested topics show all significant viewpoints, weighted by source quality—not editorial preference.</p>
+                </div>
+                
+                <div class="principle-card">
+                    <div class="principle-icon">
+                        <svg viewBox="0 0 48 48" fill="none">
+                            <path d="M24 4v8M24 36v8M4 24h8M36 24h8" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                            <circle cx="24" cy="24" r="12" stroke="currentColor" stroke-width="3"/>
+                            <path d="M24 18v8l4 4" stroke="#20B8CD" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3>Living Knowledge</h3>
+                    <p>Articles update as new information emerges. See exactly when facts were last verified and what changed.</p>
+                </div>
+                
+                <div class="principle-card">
+                    <div class="principle-icon">
+                        <svg viewBox="0 0 48 48" fill="none">
+                            <path d="M8 12h32v28a4 4 0 01-4 4H12a4 4 0 01-4-4V12z" stroke="currentColor" stroke-width="3"/>
+                            <path d="M16 12V8a4 4 0 014-4h8a4 4 0 014 4v4" stroke="currentColor" stroke-width="3"/>
+                            <path d="M18 24h12M18 32h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <circle cx="24" cy="24" r="8" stroke="#20B8CD" stroke-width="2" stroke-dasharray="4 2"/>
+                        </svg>
+                    </div>
+                    <h3>Confidence Scores</h3>
+                    <p>Every article shows how confident we are in its accuracy, based on source quality, recency, and consensus.</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Comparison Section -->
+        <section class="compare-section" id="about">
+            <div class="section-header">
+                <h2>A Different Approach</h2>
+                <p class="section-subtitle">How The Perplexity Archive compares</p>
+            </div>
+            
+            <div class="compare-table">
+                <div class="compare-header">
+                    <div class="compare-cell feature"></div>
+                    <div class="compare-cell">
+                        <span class="compare-logo perplexity">The Perplexity Archive</span>
+                    </div>
+                    <div class="compare-cell">
+                        <span class="compare-logo other">Traditional AI Encyclopedias</span>
+                    </div>
+                </div>
+                
+                <div class="compare-row">
+                    <div class="compare-cell feature">Source Visibility</div>
+                    <div class="compare-cell yes">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <path d="M20 6L9 17l-5-5"/>
+                        </svg>
+                        <span>Every claim cited inline</span>
+                    </div>
+                    <div class="compare-cell no">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <path d="M18 6L6 18M6 6l12 12"/>
+                        </svg>
+                        <span>"Fact-checked by AI"</span>
+                    </div>
+                </div>
+                
+                <div class="compare-row">
+                    <div class="compare-cell feature">Multiple Viewpoints</div>
+                    <div class="compare-cell yes">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <path d="M20 6L9 17l-5-5"/>
+                        </svg>
+                        <span>Explicit perspective panels</span>
+                    </div>
+                    <div class="compare-cell no">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <path d="M18 6L6 18M6 6l12 12"/>
+                        </svg>
+                        <span>Single editorial voice</span>
+                    </div>
+                </div>
+                
+                <div class="compare-row">
+                    <div class="compare-cell feature">Revision History</div>
+                    <div class="compare-cell yes">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <path d="M20 6L9 17l-5-5"/>
+                        </svg>
+                        <span>Full transparent changelog</span>
+                    </div>
+                    <div class="compare-cell no">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <path d="M18 6L6 18M6 6l12 12"/>
+                        </svg>
+                        <span>Opaque updates</span>
+                    </div>
+                </div>
+                
+                <div class="compare-row">
+                    <div class="compare-cell feature">Confidence Indicators</div>
+                    <div class="compare-cell yes">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <path d="M20 6L9 17l-5-5"/>
+                        </svg>
+                        <span>Clear accuracy scores</span>
+                    </div>
+                    <div class="compare-cell no">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <path d="M18 6L6 18M6 6l12 12"/>
+                        </svg>
+                        <span>No uncertainty shown</span>
+                    </div>
+                </div>
+                
+                <div class="compare-row">
+                    <div class="compare-cell feature">Methodology</div>
+                    <div class="compare-cell yes">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <path d="M20 6L9 17l-5-5"/>
+                        </svg>
+                        <span>Publicly documented</span>
+                    </div>
+                    <div class="compare-cell no">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                            <path d="M18 6L6 18M6 6l12 12"/>
+                        </svg>
+                        <span>Black box processing</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Browse Topics -->
+        <section class="topics-section">
+            <div class="section-header">
+                <h2>Explore by Topic</h2>
+            </div>
+            
+            <div class="topics-grid">
+                <a href="#" class="topic-card" style="--topic-color: #20B8CD">
+                    <div class="topic-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                            <path d="M8 21h8M12 17v4"/>
+                        </svg>
+                    </div>
+                    <span class="topic-name">Technology</span>
+                    <span class="topic-count">— articles</span>
+                </a>
+                
+                <a href="#" class="topic-card" style="--topic-color: #2E8B57">
+                    <div class="topic-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
+                            <path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/>
+                        </svg>
+                    </div>
+                    <span class="topic-name">Geography</span>
+                    <span class="topic-count">— articles</span>
+                </a>
+                
+                <a href="#" class="topic-card" style="--topic-color: #D2BA4C">
+                    <div class="topic-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M12 6v6l4 2"/>
+                        </svg>
+                    </div>
+                    <span class="topic-name">History</span>
+                    <span class="topic-count">— articles</span>
+                </a>
+                
+                <a href="#" class="topic-card" style="--topic-color: #DB4545">
+                    <div class="topic-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4.93 4.93l4.24 4.24M19.07 4.93l-4.24 4.24M12 2v4M2 12h4M18 12h4M12 18v4M9.17 14.83l-4.24 4.24M14.83 14.83l4.24 4.24"/>
+                            <circle cx="12" cy="12" r="4"/>
+                        </svg>
+                    </div>
+                    <span class="topic-name">Science</span>
+                    <span class="topic-count">— articles</span>
+                </a>
+                
+                <a href="#" class="topic-card" style="--topic-color: #944454">
+                    <div class="topic-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                        </svg>
+                    </div>
+                    <span class="topic-name">Philosophy</span>
+                    <span class="topic-count">— articles</span>
+                </a>
+                
+                <a href="#" class="topic-card" style="--topic-color: #5D878F">
+                    <div class="topic-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+                            <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
+                        </svg>
+                    </div>
+                    <span class="topic-name">Arts & Culture</span>
+                    <span class="topic-count">— articles</span>
+                </a>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <div class="footer-logo">
+                    <div class="logo-icon small">
+                        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M16 2L4 10v12l12 8 12-8V10L16 2z" stroke="currentColor" stroke-width="2" fill="none"/>
+                            <circle cx="16" cy="16" r="3" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <span>The Perplexity Archive</span>
+                </div>
+                <p class="footer-tagline">Knowledge that shows its work.</p>
+            </div>
+            
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h4>Explore</h4>
+                    <a href="#">Random Article</a>
+                    <a href="#">Today's Featured</a>
+                    <a href="#">Recently Updated</a>
+                    <a href="#">Most Cited</a>
+                </div>
+                <div class="footer-column">
+                    <h4>About</h4>
+                    <a href="#">Our Mission</a>
+                    <a href="#">Methodology</a>
+                    <a href="#">Source Guidelines</a>
+                    <a href="#">API Access</a>
+                </div>
+                <div class="footer-column">
+                    <h4>Community</h4>
+                    <a href="#">Contribute</a>
+                    <a href="#">Report Issues</a>
+                    <a href="#">Discussion Forums</a>
+                    <a href="#">Newsletter</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>© 2026 Perplexity AI. Content available under <a href="#">CC BY-SA 4.0</a>.</p>
+            <div class="footer-meta">
+                <span id="lastUpdate">Continuously updated</span>
+                <span>•</span>
+                <span id="footerArticleCount">Loading articles...</span>
+            </div>
+        </div>
+    </footer>
+    
     <script src="app.js"></script>
 </body>
 </html>
