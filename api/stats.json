@@ -1,1 +1,21 @@
-{"article_count":207,"source_count":1847,"category_count":13,"categories":[{"category":"Technology","count":45},{"category":"Science","count":38},{"category":"History","count":22},{"category":"Geography","count":18},{"category":"Philosophy","count":15},{"category":"Arts & Culture","count":14},{"category":"Economics","count":12},{"category":"Health","count":11},{"category":"Environment","count":10},{"category":"Politics","count":9},{"category":"Biography","count":8},{"category":"Mathematics","count":5}]}
+{
+  "article_count": 207,
+  "source_count": 1388,
+  "category_count": 13,
+  "categories": [
+    {"category": "Science", "count": 39},
+    {"category": "Technology", "count": 36},
+    {"category": "Biography", "count": 17},
+    {"category": "History", "count": 15},
+    {"category": "Geography", "count": 14},
+    {"category": "Health", "count": 13},
+    {"category": "Economics", "count": 12},
+    {"category": "Arts & Culture", "count": 12},
+    {"category": "Mathematics", "count": 11},
+    {"category": "Politics", "count": 10},
+    {"category": "Companies", "count": 10},
+    {"category": "Philosophy", "count": 9},
+    {"category": "Environment", "count": 9}
+  ],
+  "last_update": "2026-01-30 11:34:03"
+}
