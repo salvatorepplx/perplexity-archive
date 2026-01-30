@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article - Perplexity Archive</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .article-page{min-height:100vh;padding-top:80px}
+        .article-container{max-width:800px;margin:0 auto;padding:40px 20px}
+        .back-link{display:inline-block;margin-bottom:20px;color:var(--cyan)}
+        .article-title{font-size:2.5rem;margin-bottom:16px}
+        .article-meta{display:flex;gap:16px;margin-bottom:24px;color:#666}
+        .article-content{line-height:1.8;font-size:1.1rem}
+        .article-content p{margin-bottom:16px}
+        .sources-section{background:var(--offblack);color:white;padding:24px;border-radius:12px;margin-top:32px}
+        .source-item{padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.1)}
+        .loading{text-align:center;padding:60px}
+    </style>
+</head>
+<body>
+    <nav class="nav"><div class="nav-container"><a href="index.html" class="nav-logo">The Perplexity Archive</a></div></nav>
+    <main class="article-page">
+        <div class="article-container" id="articleContainer">
+            <div class="loading">Loading article...</div>
+        </div>
+    </main>
+    <script>
+        async function loadArticle(){const params=new URLSearchParams(window.location.search);const slug=params.get('slug');if(!slug){showError('No article specified');return}
+        try{const res=await fetch('./data.json');const data=await res.json();const article=data.articles.find(a=>a.slug===slug);if(!article){showError('Article not found');return}
+        document.title=article.title+' - Perplexity Archive';
+        document.getElementById('articleContainer').innerHTML=`
+            <a href="index.html" class="back-link">← Back</a>
+            <h1 class="article-title">${article.title}</h1>
+            <div class="article-meta"><span>${article.category}</span><span>${article.confidence_score}% confidence</span><span>${(article.sources||[]).length} sources</span></div>
+            <div class="article-content">${article.content||article.excerpt||''}</div>
+            ${(article.sources||[]).length?`<div class="sources-section"><h3>Sources</h3>${article.sources.map((s,i)=>`<div class="source-item">${i+1}. ${s.title||s.url}</div>`).join('')}</div>`:''}
+        `}catch(e){showError('Failed to load')}}
+        function showError(msg){document.getElementById('articleContainer').innerHTML=`<div class="loading">${msg}</div>`}
+        loadArticle();
+    </script>
+</body>
+</html>
