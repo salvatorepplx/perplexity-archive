@@ -1,1 +1,1018 @@
-<!-- File content will be read from workspace -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perplexity Archive — Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* Perplexity Brand Colors */
+        :root {
+            --dark-navy: #091717;
+            --offblack: #13343B;
+            --medium-teal: #2E565D;
+            --teal: #218090;
+            --cyan: #20B8CD;
+            --light-teal: #BADFDE;
+            --off-white: #FCFAF6;
+            --paper: #F3F3EE;
+            --warm-beige: #E5E3D4;
+            --chart-1: #1FB8CD;
+            --chart-2: #DB4545;
+            --chart-3: #2E8B57;
+            --chart-4: #5D878F;
+            --chart-5: #D2BA4C;
+            --font-body: 'DM Sans', -apple-system, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: var(--font-body);
+            background: var(--off-white);
+            color: var(--offblack);
+            min-height: 100vh;
+            line-height: 1.5;
+        }
+        
+        /* Header */
+        .header {
+            background: var(--offblack);
+            color: white;
+            padding: 16px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .header-left { display: flex; align-items: center; gap: 16px; }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 18px;
+        }
+        
+        .logo svg { width: 28px; height: 28px; color: var(--cyan); }
+        
+        .badge {
+            background: rgba(32, 184, 205, 0.15);
+            color: var(--cyan);
+            padding: 4px 12px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .back-link {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.2s;
+        }
+        
+        .back-link:hover { color: var(--cyan); }
+        .back-link svg { width: 16px; height: 16px; }
+        
+        /* Main Layout */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            min-height: calc(100vh - 64px);
+        }
+        
+        .main-content {
+            padding: 32px;
+            overflow-y: auto;
+        }
+        
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--warm-beige);
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: var(--medium-teal);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 6px;
+        }
+        
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--offblack);
+            line-height: 1;
+        }
+        
+        /* Section */
+        .section {
+            background: white;
+            border-radius: 12px;
+            border: 1px solid var(--warm-beige);
+            margin-bottom: 24px;
+        }
+        
+        .section-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--warm-beige);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .section-title {
+            font-size: 15px;
+            font-weight: 600;
+        }
+        
+        .section-content { padding: 20px; }
+        
+        /* Category Bars */
+        .category-row {
+            display: grid;
+            grid-template-columns: 120px 1fr 50px;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+        
+        .category-name {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--offblack);
+        }
+        
+        .category-bar-bg {
+            height: 6px;
+            background: var(--paper);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .category-bar {
+            height: 100%;
+            border-radius: 3px;
+        }
+        
+        .category-count {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--medium-teal);
+            text-align: right;
+        }
+        
+        /* Activity Log */
+        .activity-log {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .log-entry {
+            display: flex;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--paper);
+            font-size: 13px;
+        }
+        
+        .log-entry:last-child { border-bottom: none; }
+        
+        .log-time {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--medium-teal);
+            min-width: 60px;
+        }
+        
+        .log-badge {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            padding: 2px 6px;
+            border-radius: 3px;
+            background: rgba(32, 184, 205, 0.15);
+            color: var(--teal);
+        }
+        
+        .log-text { flex: 1; color: var(--offblack); }
+        
+        .log-category {
+            font-size: 11px;
+            color: var(--medium-teal);
+            background: var(--paper);
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        
+        /* Cron Status */
+        .cron-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            background: var(--paper);
+            border-radius: 8px;
+        }
+        
+        .cron-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--chart-3);
+            animation: pulse 2s ease infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+        
+        .cron-info { flex: 1; }
+        .cron-label { font-weight: 600; font-size: 14px; }
+        .cron-detail { font-size: 12px; color: var(--medium-teal); }
+        .cron-id {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--medium-teal);
+            background: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+        
+        /* Chat Panel */
+        .chat-panel {
+            background: var(--offblack);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .chat-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .chat-header-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--chart-3);
+        }
+        
+        .chat-header-title {
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .chat-header-subtitle {
+            font-size: 11px;
+            color: rgba(255,255,255,0.5);
+            margin-left: auto;
+        }
+        
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .chat-message {
+            max-width: 90%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .chat-message.user {
+            background: var(--cyan);
+            color: var(--offblack);
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+        
+        .chat-message.assistant {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+        
+        .chat-message-time {
+            font-size: 10px;
+            opacity: 0.6;
+            margin-top: 6px;
+        }
+        
+        .chat-input-area {
+            padding: 16px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .chat-input-box {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .chat-input {
+            flex: 1;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 8px;
+            padding: 12px 16px;
+            color: white;
+            font-family: var(--font-body);
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        
+        .chat-input::placeholder { color: rgba(255,255,255,0.4); }
+        .chat-input:focus { border-color: var(--cyan); }
+        
+        .chat-send {
+            background: var(--cyan);
+            border: none;
+            border-radius: 8px;
+            width: 44px;
+            height: 44px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+        
+        .chat-send:hover { background: #1aa3b6; }
+        .chat-send svg { width: 20px; height: 20px; color: var(--offblack); }
+        
+        .chat-note {
+            font-size: 11px;
+            color: rgba(255,255,255,0.4);
+            margin-top: 8px;
+            text-align: center;
+        }
+        
+        .chat-empty {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px;
+            color: rgba(255,255,255,0.5);
+        }
+        
+        .chat-empty svg {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 16px;
+            opacity: 0.3;
+        }
+        
+        .chat-empty-title {
+            font-weight: 600;
+            color: white;
+            margin-bottom: 8px;
+        }
+        
+        .chat-empty-text {
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        
+        /* Status indicator */
+        .status-sending {
+            display: none;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: rgba(32, 184, 205, 0.2);
+            border-radius: 6px;
+            margin-bottom: 12px;
+            font-size: 12px;
+            color: var(--cyan);
+        }
+        
+        .status-sending.active { display: flex; }
+        
+        .status-spinner {
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(32, 184, 205, 0.3);
+            border-top-color: var(--cyan);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .main-layout { grid-template-columns: 1fr; }
+            .chat-panel { display: none; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-left">
+            <a href="index.html" class="logo">
+                <svg viewBox="0 0 32 32" fill="none">
+                    <path d="M16 2L4 10v12l12 8 12-8V10L16 2z" stroke="currentColor" stroke-width="2" fill="none"/>
+                    <path d="M16 8l6 4v8l-6 4-6-4v-8l6-4z" fill="currentColor" opacity="0.3"/>
+                    <circle cx="16" cy="16" r="3" fill="currentColor"/>
+                </svg>
+                Perplexity Archive
+            </a>
+            <span class="badge">Dashboard</span>
+        </div>
+        <a href="index.html" class="back-link">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Back to Archive
+        </a>
+    </header>
+    
+    <div class="main-layout">
+        <main class="main-content">
+            <!-- Stats -->
+            <div class="stats-grid" id="statsGrid">
+                <div class="stat-card">
+                    <div class="stat-label">Articles</div>
+                    <div class="stat-value" id="statArticles">—</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Sources</div>
+                    <div class="stat-value" id="statSources">—</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Categories</div>
+                    <div class="stat-value" id="statCategories">—</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Avg Sources</div>
+                    <div class="stat-value" id="statAvg">—</div>
+                </div>
+            </div>
+            
+            <!-- Cron Status -->
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-title">Scheduled Tasks</span>
+                    <button class="config-btn" onclick="openConfigModal()">⚙️ Settings</button>
+                </div>
+                <div class="section-content">
+                    <div class="cron-box" style="margin-bottom: 8px;">
+                        <div class="cron-dot"></div>
+                        <div class="cron-info">
+                            <div class="cron-label">Ingestion (Primary)</div>
+                            <div class="cron-detail">Hourly at :00 — spawns 5 subagents to add articles</div>
+                        </div>
+                        <div class="cron-id">de771409</div>
+                    </div>
+                    <div class="cron-box" style="margin-bottom: 8px;">
+                        <div class="cron-dot" style="background: var(--chart-3);"></div>
+                        <div class="cron-info">
+                            <div class="cron-label">Enhance & Iterate</div>
+                            <div class="cron-detail">Hourly at :15 — processes email commands, fixes issues</div>
+                        </div>
+                        <div class="cron-id">ea42d864</div>
+                    </div>
+                    <div class="cron-box" style="margin-bottom: 8px;">
+                        <div class="cron-dot" style="background: var(--cyan);"></div>
+                        <div class="cron-info">
+                            <div class="cron-label">Ingestion (Secondary)</div>
+                            <div class="cron-detail">Hourly at :30 — spawns 5 subagents to add articles</div>
+                        </div>
+                        <div class="cron-id">ad207ec7</div>
+                    </div>
+                    <div class="cron-box">
+                        <div class="cron-dot" style="background: var(--chart-5);"></div>
+                        <div class="cron-info">
+                            <div class="cron-label">Debug & Explore</div>
+                            <div class="cron-detail">Hourly at :45 — audits system, writes debug report</div>
+                        </div>
+                        <div class="cron-id">53fcf3f2</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Categories -->
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-title">Categories</span>
+                </div>
+                <div class="section-content" id="categoryList"></div>
+            </div>
+            
+            <!-- Activity -->
+            <div class="section">
+                <div class="section-header">
+                    <span class="section-title">Recent Activity</span>
+                    <span style="font-size: 12px; color: var(--medium-teal);">From article timestamps</span>
+                </div>
+                <div class="section-content">
+                    <div class="activity-log" id="activityLog"></div>
+                </div>
+            </div>
+        </main>
+        
+        <!-- Chat Panel -->
+        <aside class="chat-panel">
+            <div class="chat-header">
+                <div class="chat-header-dot"></div>
+                <span class="chat-header-title">Archive Assistant</span>
+                <span class="chat-header-subtitle">via Email</span>
+            </div>
+            
+            <div class="chat-messages" id="chatMessages">
+                <div class="chat-empty">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2v10z"/>
+                    </svg>
+                    <div class="chat-empty-title">Control the Archive</div>
+                    <div class="chat-empty-text">
+                        Send messages to control ingestion, add topics, or request changes. 
+                        Messages are sent via email and processed by the agent.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chat-input-area">
+                <div class="status-sending" id="statusSending">
+                    <div class="status-spinner"></div>
+                    <span>Sending via email...</span>
+                </div>
+                <div class="chat-input-box">
+                    <input type="text" class="chat-input" id="chatInput" placeholder="e.g., Add 20 articles about space exploration">
+                    <button class="chat-send" id="chatSend">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                        </svg>
+                    </button>
+                </div>
+                <div class="chat-note">Messages sent to salvatore@perplexity.ai with [Archive Chat] subject</div>
+            </div>
+        </aside>
+    </div>
+    
+    <!-- Config Modal -->
+    <div class="config-modal" id="configModal" style="display:none;">
+        <div class="config-modal-backdrop" onclick="closeConfigModal()"></div>
+        <div class="config-modal-content">
+            <div class="config-modal-header">
+                <h3>Ingestion Settings</h3>
+                <button onclick="closeConfigModal()" class="config-close">&times;</button>
+            </div>
+            <div class="config-modal-body">
+                <div class="config-field">
+                    <label>Articles per batch</label>
+                    <input type="number" id="configBatchSize" min="1" max="50" value="10">
+                    <span class="config-help">Number of articles to create per cron run</span>
+                </div>
+                <div class="config-field">
+                    <label>Ingestion enabled</label>
+                    <label class="toggle">
+                        <input type="checkbox" id="configEnabled" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                    <span class="config-help">When disabled, cron runs but skips ingestion</span>
+                </div>
+            </div>
+            <div class="config-modal-footer">
+                <button onclick="closeConfigModal()" class="btn-secondary">Cancel</button>
+                <button onclick="saveConfig()" class="btn-primary">Save & Apply</button>
+            </div>
+            <div class="config-note">
+                Config is saved to backend/config.json. The cron reads this file on each run.
+            </div>
+        </div>
+    </div>
+    
+    <style>
+        .config-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .config-modal-backdrop {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+        }
+        .config-modal-content {
+            position: relative;
+            background: white;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 440px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .config-modal-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--warm-beige);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .config-modal-header h3 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        .config-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--medium-teal);
+        }
+        .config-modal-body {
+            padding: 24px;
+        }
+        .config-field {
+            margin-bottom: 20px;
+        }
+        .config-field label {
+            display: block;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+        .config-field input[type="number"] {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--warm-beige);
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: var(--font-body);
+        }
+        .config-field input[type="number"]:focus {
+            outline: none;
+            border-color: var(--cyan);
+        }
+        .config-help {
+            display: block;
+            font-size: 12px;
+            color: var(--medium-teal);
+            margin-top: 6px;
+        }
+        .toggle {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 26px;
+        }
+        .toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            inset: 0;
+            background: var(--warm-beige);
+            border-radius: 26px;
+            transition: 0.3s;
+        }
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background: white;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+        .toggle input:checked + .toggle-slider {
+            background: var(--cyan);
+        }
+        .toggle input:checked + .toggle-slider:before {
+            transform: translateX(22px);
+        }
+        .config-modal-footer {
+            padding: 16px 24px;
+            border-top: 1px solid var(--warm-beige);
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+        .btn-secondary {
+            padding: 10px 20px;
+            border: 1px solid var(--warm-beige);
+            background: white;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .btn-primary {
+            padding: 10px 20px;
+            border: none;
+            background: var(--offblack);
+            color: white;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .btn-primary:hover {
+            background: var(--medium-teal);
+        }
+        .config-note {
+            padding: 12px 24px 20px;
+            font-size: 11px;
+            color: var(--medium-teal);
+            text-align: center;
+        }
+        .config-btn {
+            background: var(--paper);
+            border: 1px solid var(--warm-beige);
+            color: var(--medium-teal);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .config-btn:hover {
+            border-color: var(--cyan);
+            color: var(--teal);
+            background: var(--light-teal);
+        }
+    </style>
+    
+    <script>
+        const CHAT_EMAIL = 'salvatore@perplexity.ai';
+        const CHAT_SUBJECT_PREFIX = '[Archive Chat]';
+        
+        // Load dashboard data from data.json
+        async function loadDashboard() {
+            try {
+                const res = await fetch('./data.json');
+                const data = await res.json();
+                
+                // Stats
+                document.getElementById('statArticles').textContent = data.stats.article_count.toLocaleString();
+                document.getElementById('statSources').textContent = data.stats.source_count.toLocaleString();
+                document.getElementById('statCategories').textContent = data.stats.category_count;
+                document.getElementById('statAvg').textContent = (data.stats.source_count / data.stats.article_count).toFixed(1);
+                
+                // Categories
+                renderCategories(data.stats.categories);
+                
+                // Activity
+                renderActivity(data.articles);
+                
+            } catch (err) {
+                console.error('Failed to load data:', err);
+            }
+        }
+        
+        function renderCategories(categories) {
+            const colors = ['#1FB8CD', '#DB4545', '#2E8B57', '#5D878F', '#D2BA4C', '#B4413C', '#964325', '#944454'];
+            const max = Math.max(...categories.map(c => c.count));
+            
+            document.getElementById('categoryList').innerHTML = categories.map((cat, i) => `
+                <div class="category-row">
+                    <span class="category-name">${escapeHtml(cat.category)}</span>
+                    <div class="category-bar-bg">
+                        <div class="category-bar" style="width: ${(cat.count/max)*100}%; background: ${colors[i % colors.length]}"></div>
+                    </div>
+                    <span class="category-count">${cat.count}</span>
+                </div>
+            `).join('');
+        }
+        
+        function renderActivity(articles) {
+            const sorted = [...articles]
+                .filter(a => a.created_at)
+                .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+                .slice(0, 15);
+            
+            document.getElementById('activityLog').innerHTML = sorted.map(a => `
+                <div class="log-entry">
+                    <span class="log-time">${formatTime(a.created_at)}</span>
+                    <span class="log-badge">New</span>
+                    <span class="log-text">${escapeHtml(a.title)}</span>
+                    <span class="log-category">${escapeHtml(a.category)}</span>
+                </div>
+            `).join('');
+        }
+        
+        function formatTime(dateStr) {
+            return new Date(dateStr).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+        }
+        
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str || '';
+            return div.innerHTML;
+        }
+        
+        // Chat functionality
+        function loadChatState() {
+            try {
+                const saved = localStorage.getItem('archive_chat_messages');
+                if (saved) {
+                    const messages = JSON.parse(saved);
+                    renderChatMessages(messages);
+                }
+            } catch (e) {}
+        }
+        
+        function saveChatMessage(role, content) {
+            try {
+                const saved = localStorage.getItem('archive_chat_messages');
+                const messages = saved ? JSON.parse(saved) : [];
+                messages.push({
+                    role,
+                    content,
+                    timestamp: new Date().toISOString()
+                });
+                // Keep last 50 messages
+                if (messages.length > 50) messages.shift();
+                localStorage.setItem('archive_chat_messages', JSON.stringify(messages));
+                renderChatMessages(messages);
+            } catch (e) {}
+        }
+        
+        function renderChatMessages(messages) {
+            if (!messages.length) return;
+            
+            const container = document.getElementById('chatMessages');
+            container.innerHTML = messages.map(m => `
+                <div class="chat-message ${m.role}">
+                    ${escapeHtml(m.content)}
+                    <div class="chat-message-time">${new Date(m.timestamp).toLocaleTimeString()}</div>
+                </div>
+            `).join('');
+            
+            container.scrollTop = container.scrollHeight;
+        }
+        
+        async function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            if (!message) return;
+            
+            // Show sending status
+            document.getElementById('statusSending').classList.add('active');
+            input.disabled = true;
+            
+            // Save user message locally
+            saveChatMessage('user', message);
+            input.value = '';
+            
+            // Create mailto link and open it
+            const subject = encodeURIComponent(`${CHAT_SUBJECT_PREFIX} ${new Date().toISOString()}`);
+            const body = encodeURIComponent(`[Archive Dashboard Chat]\n\nMessage: ${message}\n\nTimestamp: ${new Date().toISOString()}`);
+            
+            // Open email client
+            window.location.href = `mailto:${CHAT_EMAIL}?subject=${subject}&body=${body}`;
+            
+            // Add pending response message
+            setTimeout(() => {
+                saveChatMessage('assistant', '📧 Message sent via email. I\'ll process this and update the archive. Check back soon or watch for my email response.');
+                document.getElementById('statusSending').classList.remove('active');
+                input.disabled = false;
+            }, 1000);
+        }
+        
+        // Event listeners
+        document.getElementById('chatSend').addEventListener('click', sendChatMessage);
+        document.getElementById('chatInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendChatMessage();
+        });
+        
+        // Initialize
+        loadDashboard();
+        loadChatState();
+        
+        // Poll for chat state updates (checks chat_state.json)
+        async function pollChatState() {
+            try {
+                const res = await fetch('./chat_state.json?' + Date.now());
+                if (res.ok) {
+                    const state = await res.json();
+                    if (state.messages && state.messages.length > 0) {
+                        // Merge with local messages
+                        const local = JSON.parse(localStorage.getItem('archive_chat_messages') || '[]');
+                        const serverMsgs = state.messages.filter(m => m.role === 'assistant');
+                        
+                        // Add any new server messages not in local
+                        serverMsgs.forEach(sm => {
+                            const exists = local.some(lm => lm.timestamp === sm.timestamp);
+                            if (!exists) {
+                                local.push(sm);
+                            }
+                        });
+                        
+                        localStorage.setItem('archive_chat_messages', JSON.stringify(local));
+                        renderChatMessages(local);
+                    }
+                }
+            } catch (e) {}
+        }
+        
+        // Poll every 30 seconds
+        setInterval(pollChatState, 30000);
+        pollChatState();
+        
+        // Config modal functions
+        let currentConfig = {
+            ingestion: { batch_size: 10, enabled: true }
+        };
+        
+        async function loadConfig() {
+            try {
+                const res = await fetch('./backend/config.json?' + Date.now());
+                if (res.ok) {
+                    currentConfig = await res.json();
+                    document.getElementById('configBatchSize').value = currentConfig.ingestion?.batch_size || 10;
+                    document.getElementById('configEnabled').checked = currentConfig.ingestion?.enabled !== false;
+                }
+            } catch (e) {
+                console.log('Using default config');
+            }
+        }
+        
+        function openConfigModal() {
+            loadConfig();
+            document.getElementById('configModal').style.display = 'flex';
+        }
+        
+        function closeConfigModal() {
+            document.getElementById('configModal').style.display = 'none';
+        }
+        
+        async function saveConfig() {
+            const batchSize = parseInt(document.getElementById('configBatchSize').value) || 10;
+            const enabled = document.getElementById('configEnabled').checked;
+            
+            // Since we can't write directly to the server from static hosting,
+            // we send this as a chat command that the agent will process
+            const configMsg = `[CONFIG UPDATE] Set batch_size=${batchSize}, enabled=${enabled}`;
+            
+            // Save locally for immediate feedback
+            currentConfig.ingestion = { batch_size: batchSize, enabled: enabled };
+            localStorage.setItem('archive_config', JSON.stringify(currentConfig));
+            
+            // Send via email for the agent to apply
+            const subject = encodeURIComponent(`${CHAT_SUBJECT_PREFIX} Config Update`);
+            const body = encodeURIComponent(`[Archive Config Update]\n\nNew settings:\n- Batch size: ${batchSize}\n- Enabled: ${enabled}\n\nPlease update backend/config.json with these values.\n\nTimestamp: ${new Date().toISOString()}`);
+            
+            window.location.href = `mailto:${CHAT_EMAIL}?subject=${subject}&body=${body}`;
+            
+            saveChatMessage('user', configMsg);
+            setTimeout(() => {
+                saveChatMessage('assistant', `📧 Config update request sent. Batch size: ${batchSize}, Enabled: ${enabled}. The agent will apply this on next run.`);
+            }, 500);
+            
+            closeConfigModal();
+        }
+        
+        // Load config on init
+        loadConfig();
+    </script>
+</body>
+</html>
