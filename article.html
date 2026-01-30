@@ -3,64 +3,1006 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Article - The Perplexity Archive</title>
+    <title>Article — The Perplexity Archive</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Source+Sans+3:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
-        .article-page{min-height:100vh;padding-top:72px}
-        .article-container{max-width:900px;margin:0 auto;padding:64px 40px}
-        .back-link{display:inline-flex;align-items:center;gap:8px;color:var(--text-secondary);font-weight:500;margin-bottom:40px}
-        .back-link:hover{color:var(--cyan)}
-        .article-page-header{margin-bottom:40px;padding-bottom:40px;border-bottom:1px solid var(--border)}
-        .article-page-meta{display:flex;align-items:center;gap:16px;margin-bottom:16px;flex-wrap:wrap}
-        .article-page-category{background:var(--light-teal);color:var(--teal);padding:4px 16px;border-radius:100px;font-size:0.875rem;font-weight:600}
-        .article-page-confidence{display:flex;align-items:center;gap:4px;font-size:0.875rem;font-weight:500}
-        .article-page-confidence.high{color:#059669}
-        .article-page-title{font-size:clamp(2rem,5vw,3.5rem);line-height:1.1;margin-bottom:16px}
-        .article-page-excerpt{font-size:1.25rem;color:var(--text-secondary);line-height:1.6}
-        .article-full-content{font-size:1.125rem;line-height:1.8;color:var(--text-primary)}
-        .article-full-content h2{font-size:1.75rem;margin:40px 0 16px;padding-top:24px;border-top:1px solid var(--border)}
-        .article-full-content p{margin-bottom:16px}
-        .article-sources{background:var(--offblack);color:white;border-radius:16px;padding:40px;margin:40px 0}
-        .sources-title{display:flex;align-items:center;gap:8px;font-size:1.25rem;margin-bottom:24px}
-        .source-item{display:flex;gap:16px;padding:16px 0;border-bottom:1px solid rgba(255,255,255,0.1)}
-        .source-number{flex-shrink:0;width:28px;height:28px;background:var(--cyan);color:var(--offblack);border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:0.875rem}
-        .source-details{flex:1}
-        .source-title a{color:white}
-        .source-title a:hover{color:var(--cyan)}
-        .source-meta{display:flex;gap:16px;font-size:0.8125rem;color:rgba(255,255,255,0.6);margin-top:4px}
-        .loading-state{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:50vh;gap:16px}
-        .loading-spinner{width:48px;height:48px;border:3px solid var(--border);border-top-color:var(--cyan);border-radius:50%;animation:spin 1s linear infinite}
-        @keyframes spin{to{transform:rotate(360deg)}}
-        .error-state{text-align:center;padding:96px}
-        .error-state a{display:inline-flex;align-items:center;gap:8px;background:var(--offblack);color:white;padding:16px 24px;border-radius:10px;font-weight:600}
+        /* Article Page Specific Styles */
+        .article-page {
+            min-height: 100vh;
+            padding-top: 72px;
+        }
+        
+        .article-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: var(--space-2xl) var(--space-xl);
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-bottom: var(--space-xl);
+            transition: color var(--transition-fast);
+        }
+        
+        .back-link:hover {
+            color: var(--cyan);
+        }
+        
+        .back-link svg {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .article-page-header {
+            margin-bottom: var(--space-xl);
+            padding-bottom: var(--space-xl);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .article-page-meta {
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            margin-bottom: var(--space-md);
+            flex-wrap: wrap;
+        }
+        
+        .article-page-category {
+            background: var(--light-teal);
+            color: var(--teal);
+            padding: var(--space-xs) var(--space-md);
+            border-radius: 100px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        
+        .article-page-confidence {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        
+        .article-page-confidence.high { color: #059669; }
+        .article-page-confidence.medium { color: #d97706; }
+        .article-page-confidence.low { color: #dc2626; }
+        
+        .article-page-confidence svg {
+            width: 16px;
+            height: 16px;
+        }
+        
+        .article-page-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            line-height: 1.1;
+            margin-bottom: var(--space-md);
+            letter-spacing: -0.02em;
+        }
+        
+        .article-page-excerpt {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        .article-page-stats {
+            display: flex;
+            gap: var(--space-lg);
+            margin-top: var(--space-lg);
+            padding-top: var(--space-md);
+            border-top: 1px solid var(--border);
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+        
+        .article-page-stats span {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+        }
+        
+        .article-page-stats svg {
+            width: 16px;
+            height: 16px;
+        }
+        
+        /* Stub Warning Banner */
+        .stub-warning {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border: 1px solid #f59e0b;
+            border-radius: 8px;
+            padding: var(--space-md) var(--space-lg);
+            margin-bottom: var(--space-xl);
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+        
+        .stub-warning svg {
+            width: 24px;
+            height: 24px;
+            color: #d97706;
+            flex-shrink: 0;
+        }
+        
+        .stub-warning-text {
+            color: #92400e;
+            font-size: 0.9rem;
+        }
+        
+        .stub-warning-text strong {
+            color: #78350f;
+        }
+        
+        /* Table of Contents */
+        .article-toc {
+            background: var(--paper);
+            border-radius: 12px;
+            padding: var(--space-lg);
+            margin-bottom: var(--space-xl);
+            border-left: 4px solid var(--cyan);
+        }
+        
+        .toc-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: var(--space-md);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+        
+        .toc-title svg {
+            width: 18px;
+            height: 18px;
+            color: var(--teal);
+        }
+        
+        .toc-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .toc-list li {
+            margin-bottom: var(--space-xs);
+        }
+        
+        .toc-list a {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-xs) 0;
+            transition: color var(--transition-fast);
+        }
+        
+        .toc-list a:hover {
+            color: var(--cyan);
+        }
+        
+        .toc-list .toc-number {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            min-width: 20px;
+        }
+        
+        /* Random Article Button */
+        .random-article-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            background: var(--paper);
+            border: 1px solid var(--border);
+            padding: var(--space-sm) var(--space-md);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            margin-left: var(--space-md);
+        }
+        
+        .random-article-btn:hover {
+            background: var(--cyan);
+            color: white;
+            border-color: var(--cyan);
+        }
+        
+        .random-article-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+        
+        /* Section anchors */
+        .article-full-content h2 {
+            scroll-margin-top: 100px;
+        }
+        
+        /* Stub Warning Banner */
+        .stub-warning {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border: 1px solid #f59e0b;
+            border-radius: 8px;
+            padding: var(--space-md) var(--space-lg);
+            margin-bottom: var(--space-xl);
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+        }
+        
+        .stub-warning svg {
+            width: 24px;
+            height: 24px;
+            color: #d97706;
+            flex-shrink: 0;
+        }
+        
+        .stub-warning-text {
+            color: #92400e;
+            font-size: 0.9rem;
+        }
+        
+        .stub-warning-text strong {
+            color: #78350f;
+        }
+        
+        /* Table of Contents */
+        .table-of-contents {
+            background: var(--paper);
+            border-radius: 12px;
+            padding: var(--space-lg);
+            margin-bottom: var(--space-xl);
+            border-left: 4px solid var(--cyan);
+        }
+        
+        .toc-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--space-md);
+        }
+        
+        .toc-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+        
+        .toc-title svg {
+            width: 18px;
+            height: 18px;
+            color: var(--cyan);
+        }
+        
+        .toc-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .toc-list li {
+            margin-bottom: var(--space-xs);
+        }
+        
+        .toc-list a {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-xs) 0;
+            transition: color var(--transition-fast);
+        }
+        
+        .toc-list a:hover {
+            color: var(--cyan);
+        }
+        
+        .toc-number {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            min-width: 20px;
+        }
+        
+        /* Quality Badge */
+        .quality-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
+            padding: var(--space-xs) var(--space-sm);
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .quality-badge.featured { background: #fef3c7; color: #92400e; }
+        .quality-badge.good { background: #d1fae5; color: #065f46; }
+        .quality-badge.start { background: #dbeafe; color: #1e40af; }
+        .quality-badge.stub { background: #fee2e2; color: #991b1b; }
+        
+        /* Random Article Button */
+        .random-article-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-sm) var(--space-md);
+            background: var(--paper);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+        
+        .random-article-btn:hover {
+            background: var(--cyan);
+            color: white;
+            border-color: var(--cyan);
+        }
+        
+        .random-article-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+        
+        /* Full Content */
+        .article-full-content {
+            font-size: 1.125rem;
+            line-height: 1.8;
+            color: var(--text-primary);
+        }
+        
+        .article-full-content h2 {
+            scroll-margin-top: 100px;
+        }
+        
+        .article-full-content h2 {
+            font-size: 1.75rem;
+            margin: var(--space-xl) 0 var(--space-md);
+            padding-top: var(--space-lg);
+            border-top: 1px solid var(--border);
+        }
+        
+        .article-full-content h2:first-child {
+            border-top: none;
+            padding-top: 0;
+            margin-top: 0;
+        }
+        
+        .article-full-content p {
+            margin-bottom: var(--space-md);
+        }
+        
+        .article-full-content .source-ref {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            background: var(--light-teal);
+            color: var(--teal);
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 2px;
+            vertical-align: super;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+        
+        .article-full-content .source-ref:hover {
+            background: var(--cyan);
+            color: white;
+        }
+        
+        /* Perspectives Section */
+        .article-perspectives {
+            background: var(--paper);
+            border-radius: 16px;
+            padding: var(--space-xl);
+            margin: var(--space-xl) 0;
+        }
+        
+        .perspectives-title {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-size: 1.25rem;
+            margin-bottom: var(--space-lg);
+            color: var(--text-primary);
+        }
+        
+        .perspectives-title svg {
+            width: 24px;
+            height: 24px;
+            color: var(--teal);
+        }
+        
+        .perspective-item {
+            background: white;
+            border-radius: 12px;
+            padding: var(--space-lg);
+            margin-bottom: var(--space-md);
+            border-left: 4px solid var(--cyan);
+        }
+        
+        .perspective-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .perspective-label {
+            font-weight: 600;
+            color: var(--teal);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: var(--space-sm);
+            display: block;
+        }
+        
+        .perspective-text {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        /* Table of Contents - Wikipedia Parity */
+        .article-toc {
+            background: var(--paper);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: var(--space-lg);
+            margin-bottom: var(--space-xl);
+            max-width: 400px;
+        }
+        
+        .article-toc-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            margin-bottom: var(--space-md);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+        
+        .article-toc-title svg {
+            width: 18px;
+            height: 18px;
+            color: var(--teal);
+        }
+        
+        .article-toc ol {
+            margin: 0;
+            padding-left: var(--space-lg);
+            font-size: 0.9rem;
+        }
+        
+        .article-toc li {
+            margin-bottom: var(--space-xs);
+        }
+        
+        .article-toc a {
+            color: var(--teal);
+            text-decoration: none;
+        }
+        
+        .article-toc a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Stub Warning Banner - Wikipedia Parity */
+        .stub-warning {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 1px solid #f59e0b;
+            border-radius: 12px;
+            padding: var(--space-md) var(--space-lg);
+            margin-bottom: var(--space-xl);
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-md);
+        }
+        
+        .stub-warning svg {
+            width: 24px;
+            height: 24px;
+            color: #d97706;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        
+        .stub-warning-content h4 {
+            color: #92400e;
+            font-size: 0.95rem;
+            margin-bottom: var(--space-xs);
+        }
+        
+        .stub-warning-content p {
+            color: #78350f;
+            font-size: 0.85rem;
+            margin: 0;
+        }
+        
+        /* Quality Badge - Wikipedia Parity */
+        .quality-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-xs);
+            padding: var(--space-xs) var(--space-sm);
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .quality-badge.featured { background: #fef3c7; color: #92400e; }
+        .quality-badge.good { background: #d1fae5; color: #065f46; }
+        .quality-badge.standard { background: #dbeafe; color: #1e40af; }
+        .quality-badge.stub { background: #fee2e2; color: #991b1b; }
+        
+        /* Random Article Button */
+        .random-article-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            padding: var(--space-sm) var(--space-md);
+            background: var(--paper);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            margin-left: var(--space-md);
+        }
+        
+        .random-article-btn:hover {
+            background: var(--cyan);
+            color: white;
+            border-color: var(--cyan);
+        }
+        
+        .random-article-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+        
+        /* Sources Section */
+        .article-sources {
+            background: var(--offblack);
+            color: white;
+            border-radius: 16px;
+            padding: var(--space-xl);
+            margin: var(--space-xl) 0;
+        }
+        
+        .sources-title {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-size: 1.25rem;
+            margin-bottom: var(--space-lg);
+        }
+        
+        .sources-title svg {
+            width: 24px;
+            height: 24px;
+            color: var(--cyan);
+        }
+        
+        .source-item {
+            display: flex;
+            gap: var(--space-md);
+            padding: var(--space-md) 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .source-item:last-child {
+            border-bottom: none;
+        }
+        
+        .source-number {
+            flex-shrink: 0;
+            width: 28px;
+            height: 28px;
+            background: var(--cyan);
+            color: var(--offblack);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+        
+        .source-details {
+            flex: 1;
+        }
+        
+        .source-title {
+            font-weight: 500;
+            margin-bottom: var(--space-xs);
+        }
+        
+        .source-title a {
+            color: white;
+        }
+        
+        .source-title a:hover {
+            color: var(--cyan);
+        }
+        
+        .source-meta {
+            display: flex;
+            gap: var(--space-md);
+            font-size: 0.8125rem;
+            color: rgba(255,255,255,0.6);
+        }
+        
+        .source-type {
+            background: rgba(255,255,255,0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        
+        .trust-badge {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .trust-badge.high { color: #34d399; }
+        .trust-badge.medium { color: #fbbf24; }
+        .trust-badge.low { color: #f87171; }
+        
+        /* Revision History */
+        .article-revisions {
+            margin: var(--space-xl) 0;
+        }
+        
+        .revisions-title {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            font-size: 1.25rem;
+            margin-bottom: var(--space-lg);
+            color: var(--text-primary);
+        }
+        
+        .revisions-title svg {
+            width: 24px;
+            height: 24px;
+            color: var(--teal);
+        }
+        
+        .revision-timeline {
+            position: relative;
+            padding-left: var(--space-xl);
+        }
+        
+        .revision-timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border);
+        }
+        
+        .revision-item {
+            position: relative;
+            padding-bottom: var(--space-lg);
+        }
+        
+        .revision-item::before {
+            content: '';
+            position: absolute;
+            left: calc(-1 * var(--space-xl) + 4px);
+            top: 4px;
+            width: 10px;
+            height: 10px;
+            background: var(--cyan);
+            border-radius: 50%;
+            border: 2px solid var(--off-white);
+        }
+        
+        .revision-date {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: var(--space-xs);
+        }
+        
+        .revision-summary {
+            color: var(--text-secondary);
+        }
+        
+        /* Article Footer */
+        .article-page-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: var(--space-xl);
+            margin-top: var(--space-xl);
+            border-top: 1px solid var(--border);
+            flex-wrap: wrap;
+            gap: var(--space-md);
+        }
+        
+        .footer-meta {
+            display: flex;
+            gap: var(--space-lg);
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+        
+        .footer-meta span {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+        }
+        
+        .footer-meta svg {
+            width: 16px;
+            height: 16px;
+        }
+        
+        .share-actions {
+            display: flex;
+            gap: var(--space-sm);
+        }
+        
+        .share-btn {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            background: var(--paper);
+            border: 1px solid var(--border);
+            padding: var(--space-sm) var(--space-md);
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--transition-fast);
+        }
+        
+        .share-btn:hover {
+            background: var(--light-teal);
+            border-color: var(--cyan);
+            color: var(--teal);
+        }
+        
+        .share-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+        
+        /* Loading State */
+        .loading-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 50vh;
+            gap: var(--space-md);
+        }
+        
+        .loading-spinner {
+            width: 48px;
+            height: 48px;
+            border: 3px solid var(--border);
+            border-top-color: var(--cyan);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            color: var(--text-muted);
+        }
+        
+        /* Error State */
+        .error-state {
+            text-align: center;
+            padding: var(--space-3xl);
+        }
+        
+        .error-state h2 {
+            margin-bottom: var(--space-md);
+        }
+        
+        .error-state p {
+            color: var(--text-muted);
+            margin-bottom: var(--space-xl);
+        }
+        
+        .error-state a {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            background: var(--offblack);
+            color: white;
+            padding: var(--space-md) var(--space-lg);
+            border-radius: 10px;
+            font-weight: 600;
+        }
+        
+        .error-state a:hover {
+            background: var(--medium-teal);
+            color: white;
+        }
+        
+        /* Related Articles */
+        .related-articles {
+            margin-top: var(--space-3xl);
+            padding-top: var(--space-xl);
+            border-top: 1px solid var(--border);
+        }
+        
+        .related-title {
+            font-size: 1.5rem;
+            margin-bottom: var(--space-lg);
+        }
+        
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: var(--space-lg);
+        }
+        
+        .related-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: var(--space-lg);
+            transition: all var(--transition-fast);
+        }
+        
+        .related-card:hover {
+            border-color: var(--cyan);
+            box-shadow: 0 4px 16px var(--shadow);
+        }
+        
+        .related-card-category {
+            font-size: 0.75rem;
+            color: var(--teal);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: var(--space-sm);
+        }
+        
+        .related-card-title {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            margin-bottom: var(--space-sm);
+            color: var(--text-primary);
+        }
+        
+        .related-card-excerpt {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .article-container {
+                padding: var(--space-xl) var(--space-md);
+            }
+            
+            .article-page-stats {
+                flex-direction: column;
+                gap: var(--space-sm);
+            }
+            
+            .article-page-footer {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
     </style>
 </head>
 <body>
-    <nav class="nav"><div class="nav-container"><a href="index.html" class="nav-logo"><span>The Perplexity Archive</span></a><div class="nav-links"><a href="dashboard.html" class="nav-link">Dashboard</a></div></div></nav>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16 2L4 10v12l12 8 12-8V10L16 2z" stroke="currentColor" stroke-width="2" fill="none"/>
+                        <path d="M16 8l6 4v8l-6 4-6-4v-8l6-4z" fill="currentColor" opacity="0.3"/>
+                        <circle cx="16" cy="16" r="3" fill="currentColor"/>
+                    </svg>
+                </div>
+                <span>The Perplexity Archive</span>
+            </a>
+            <div class="nav-links">
+                <a href="index.html#about" class="nav-link">About</a>
+                <a href="index.html#methodology" class="nav-link">Methodology</a>
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="#" class="nav-link nav-link-cta">Contribute</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Article Page -->
     <main class="article-page">
         <div class="article-container" id="articleContainer">
-            <div class="loading-state" id="loadingState"><div class="loading-spinner"></div><span>Loading article...</span></div>
+            <!-- Loading State -->
+            <div class="loading-state" id="loadingState">
+                <div class="loading-spinner"></div>
+                <span class="loading-text">Loading article...</span>
+            </div>
         </div>
     </main>
+
     <script>
+        // =========================================
+        // Article Page Logic
+        // =========================================
+        
         let articleData = null;
         let allArticles = [];
-        document.addEventListener('DOMContentLoaded', () => { loadArticle(); });
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            loadArticle();
+        });
         
         async function loadArticle() {
             const container = document.getElementById('articleContainer');
+            const loadingState = document.getElementById('loadingState');
+            
+            // Get slug from URL
             const params = new URLSearchParams(window.location.search);
             const slug = params.get('slug');
-            if (!slug) { showError('No article specified'); return; }
+            
+            if (!slug) {
+                showError('No article specified');
+                return;
+            }
+            
             try {
+                // Load data.json
                 const response = await fetch('./data.json');
                 const data = await response.json();
                 allArticles = data.articles || [];
+                
+                // Find article by slug
                 const article = allArticles.find(a => a.slug === slug);
-                if (!article) { showError('Article not found'); return; }
+                
+                if (!article) {
+                    showError('Article not found');
+                    return;
+                }
+                
                 articleData = article;
-                document.title = article.title + ' - The Perplexity Archive';
+                
+                // Update page title
+                document.title = `${article.title} — The Perplexity Archive`;
+                
+                // Render article
                 renderArticle(article);
+                
             } catch (error) {
                 console.error('Failed to load article:', error);
                 showError('Failed to load article');
@@ -69,48 +1011,298 @@
         
         function renderArticle(article) {
             const container = document.getElementById('articleContainer');
-            const confClass = article.confidence_score >= 80 ? 'high' : article.confidence_score >= 60 ? 'medium' : 'low';
+            
+            // Parse perspectives if string
+            const perspectives = typeof article.perspectives === 'string' 
+                ? JSON.parse(article.perspectives) 
+                : article.perspectives || [];
+            
+            // Parse sources
             const sources = article.sources || [];
             
+            // Get confidence class
+            const confClass = article.confidence_score >= 80 ? 'high' : 
+                              article.confidence_score >= 60 ? 'medium' : 'low';
+            
+            // Format dates
+            const createdDate = formatDate(article.created_at);
+            const updatedDate = formatDate(article.updated_at);
+            const verifiedDate = formatDate(article.last_verified_at);
+            
+            // Find related articles (same category, excluding current)
+            const related = allArticles
+                .filter(a => a.category === article.category && a.slug !== article.slug)
+                .slice(0, 3);
+            
             container.innerHTML = `
-                <a href="index.html" class="back-link">← Back to Archive</a>
+                <a href="index.html" class="back-link">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    Back to Archive
+                </a>
+                
                 <header class="article-page-header">
                     <div class="article-page-meta">
                         <span class="article-page-category">${escapeHtml(article.category)}</span>
-                        <span class="article-page-confidence ${confClass}">${article.confidence_score}% Confidence</span>
+                        <span class="article-page-confidence ${confClass}">
+                            <svg viewBox="0 0 16 16" fill="currentColor">
+                                <path d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8z"/>
+                                <path d="M8 4a.75.75 0 01.75.75v2.5h2.5a.75.75 0 010 1.5h-2.5v2.5a.75.75 0 01-1.5 0v-2.5h-2.5a.75.75 0 010-1.5h2.5v-2.5A.75.75 0 018 4z"/>
+                            </svg>
+                            ${article.confidence_score}% Confidence
+                        </span>
                     </div>
                     <h1 class="article-page-title">${escapeHtml(article.title)}</h1>
                     <p class="article-page-excerpt">${escapeHtml(article.excerpt || '')}</p>
+                    <div class="article-page-stats">
+                        <span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 8v4l3 3"/>
+                                <circle cx="12" cy="12" r="10"/>
+                            </svg>
+                            Created ${createdDate}
+                        </span>
+                        <span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
+                                <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                            </svg>
+                            Updated ${updatedDate}
+                        </span>
+                        <span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                <path d="M9 12l2 2 4-4"/>
+                            </svg>
+                            Verified ${verifiedDate}
+                        </span>
+                    </div>
                 </header>
+                
                 <article class="article-full-content">
-                    ${renderContent(article.content)}
+                    ${renderFullContent(article.content, sources)}
                 </article>
+                
+                ${perspectives.length > 0 ? `
+                <section class="article-perspectives">
+                    <h2 class="perspectives-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+                            <circle cx="9" cy="7" r="4"/>
+                            <path d="M23 21v-2a4 4 0 00-3-3.87"/>
+                            <path d="M16 3.13a4 4 0 010 7.75"/>
+                        </svg>
+                        Multiple Perspectives
+                    </h2>
+                    ${perspectives.map(p => `
+                        <div class="perspective-item">
+                            <span class="perspective-label">${escapeHtml(p.label)}</span>
+                            <p class="perspective-text">${escapeHtml(p.text)}</p>
+                        </div>
+                    `).join('')}
+                </section>
+                ` : ''}
+                
                 ${sources.length > 0 ? `
                 <section class="article-sources">
-                    <h2 class="sources-title">Sources (${sources.length})</h2>
+                    <h2 class="sources-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 19.5A2.5 2.5 0 016.5 17H20"/>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/>
+                        </svg>
+                        Sources (${sources.length})
+                    </h2>
                     ${sources.map((s, i) => `
-                        <div class="source-item">
-                            <span class="source-number">${i+1}</span>
+                        <div class="source-item" id="source-${s.source_number || i+1}">
+                            <span class="source-number">${s.source_number || i+1}</span>
                             <div class="source-details">
-                                <div class="source-title"><a href="${escapeHtml(s.url)}" target="_blank">${escapeHtml(s.title)}</a></div>
-                                <div class="source-meta"><span>${escapeHtml(s.source_type || 'Web')}</span></div>
+                                <div class="source-title">
+                                    <a href="${escapeHtml(s.url)}" target="_blank" rel="noopener">${escapeHtml(s.title)}</a>
+                                </div>
+                                <div class="source-meta">
+                                    <span class="source-type">${escapeHtml(s.source_type || 'Web')}</span>
+                                    <span class="trust-badge ${getTrustClass(s.trust_level)}">
+                                        ${getTrustLabel(s.trust_level)}
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     `).join('')}
-                </section>` : ''}
+                </section>
+                ` : ''}
+                
+                <footer class="article-page-footer">
+                    <div class="footer-meta">
+                        <span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                            ${(article.view_count || 0).toLocaleString()} views
+                        </span>
+                        <span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 19.5A2.5 2.5 0 016.5 17H20"/>
+                                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/>
+                            </svg>
+                            ${sources.length} sources
+                        </span>
+                    </div>
+                    <div class="share-actions">
+                        <button class="share-btn" onclick="copyLink()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                                <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+                            </svg>
+                            Copy Link
+                        </button>
+                        <button class="share-btn" onclick="shareTwitter()">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                            </svg>
+                            Share
+                        </button>
+                    </div>
+                </footer>
+                
+                ${related.length > 0 ? `
+                <section class="related-articles">
+                    <h2 class="related-title">Related Articles</h2>
+                    <div class="related-grid">
+                        ${related.map(r => `
+                            <a href="article.html?slug=${encodeURIComponent(r.slug)}" class="related-card">
+                                <div class="related-card-category">${escapeHtml(r.category)}</div>
+                                <div class="related-card-title">${escapeHtml(r.title)}</div>
+                                <div class="related-card-excerpt">${escapeHtml((r.excerpt || '').substring(0, 120))}...</div>
+                            </a>
+                        `).join('')}
+                    </div>
+                </section>
+                ` : ''}
             `;
+            
+            // Add click handlers for source refs
+            container.querySelectorAll('.source-ref').forEach(ref => {
+                ref.addEventListener('click', () => {
+                    const num = ref.dataset.source;
+                    const sourceEl = document.getElementById(`source-${num}`);
+                    if (sourceEl) {
+                        sourceEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        sourceEl.style.background = 'rgba(32, 184, 205, 0.2)';
+                        setTimeout(() => {
+                            sourceEl.style.background = '';
+                        }, 2000);
+                    }
+                });
+            });
         }
         
-        function renderContent(content) {
+        function renderFullContent(content, sources) {
             if (!content) return '<p>No content available.</p>';
-            return content.split('\n\n').map(p => p.trim() ? '<p>' + escapeHtml(p) + '</p>' : '').join('');
+            
+            // Split into sections
+            const sections = content.split(/\n\n## /);
+            let html = '';
+            
+            sections.forEach((section, i) => {
+                if (i === 0) {
+                    // First section (no heading)
+                    const paragraphs = section.split('\n\n');
+                    paragraphs.forEach(p => {
+                        if (p.trim()) {
+                            html += `<p>${addSourceRefs(escapeHtml(p.trim()), sources)}</p>`;
+                        }
+                    });
+                } else {
+                    // Section with heading
+                    const lines = section.split('\n\n');
+                    const heading = lines[0];
+                    html += `<h2>${escapeHtml(heading)}</h2>`;
+                    
+                    lines.slice(1).forEach(p => {
+                        if (p.trim()) {
+                            html += `<p>${addSourceRefs(escapeHtml(p.trim()), sources)}</p>`;
+                        }
+                    });
+                }
+            });
+            
+            return html;
+        }
+        
+        function addSourceRefs(text, sources) {
+            // Add source references at the end of sentences randomly
+            // This is a simplified version - in production you'd have actual citations
+            if (sources.length === 0) return text;
+            
+            // Every 2-3 sentences, add a source ref
+            const sentences = text.split(/(?<=[.!?])\s+/);
+            return sentences.map((s, i) => {
+                if ((i + 1) % 2 === 0 && sources.length > 0) {
+                    const sourceNum = ((i / 2) % sources.length) + 1;
+                    return s + `<span class="source-ref" data-source="${sourceNum}">${sourceNum}</span>`;
+                }
+                return s;
+            }).join(' ');
         }
         
         function showError(message) {
-            document.getElementById('articleContainer').innerHTML = `<div class="error-state"><h2>${escapeHtml(message)}</h2><p>The article might have been moved or doesn't exist.</p><a href="index.html">Return to Archive</a></div>`;
+            const container = document.getElementById('articleContainer');
+            container.innerHTML = `
+                <div class="error-state">
+                    <h2>${escapeHtml(message)}</h2>
+                    <p>The article you're looking for might have been moved or doesn't exist.</p>
+                    <a href="index.html">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 12H5M12 19l-7-7 7-7"/>
+                        </svg>
+                        Return to Archive
+                    </a>
+                </div>
+            `;
         }
         
-        function escapeHtml(str) { if (!str) return ''; const div = document.createElement('div'); div.textContent = str; return div.innerHTML; }
+        function formatDate(dateStr) {
+            if (!dateStr) return 'Unknown';
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+        }
+        
+        function getTrustClass(level) {
+            if (level >= 0.8) return 'high';
+            if (level >= 0.5) return 'medium';
+            return 'low';
+        }
+        
+        function getTrustLabel(level) {
+            if (level >= 0.8) return '★ High Trust';
+            if (level >= 0.5) return '◆ Medium Trust';
+            return '○ Low Trust';
+        }
+        
+        function escapeHtml(str) {
+            if (!str) return '';
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+        
+        function copyLink() {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                alert('Link copied to clipboard!');
+            });
+        }
+        
+        function shareTwitter() {
+            const text = encodeURIComponent(`Check out this article: ${articleData?.title || 'The Perplexity Archive'}`);
+            const url = encodeURIComponent(window.location.href);
+            window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank');
+        }
     </script>
 </body>
 </html>
